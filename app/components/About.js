@@ -9,7 +9,7 @@ export default function About() {
   <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
     {/* Left Side (Image) */}
     <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full border-4 border-red-600 overflow-hidden mb-8 md:mb-0">
-      <img
+      <Image
         src="/rahul.jpeg" // Replace with your image path
         alt="Profile Picture"
         className="object-cover w-full h-full"
