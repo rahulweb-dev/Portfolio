@@ -15,7 +15,7 @@ export default function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/rahul.jpeg" // Make sure this image is in your public folder
+          src="https://tinypng.com/images/social/website.jpg" // Make sure this image is in your public folder
           alt="Background Image"
           layout="fill"
           objectFit="cover"
