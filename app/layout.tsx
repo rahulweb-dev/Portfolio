@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Script from "next/script"; // ✅ Import next/script
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,19 +15,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Rahul portfolio",
+export const metadata: Metadata = {
+  title: "Rahul Portfolio",
   description: "This is my Next.js site",
-  keywords: "nextjs, react, seo, web development",
+  keywords: ["nextjs", "react", "seo", "web development"],
   authors: [{ name: "Rahul Dev" }],
   openGraph: {
-    title: "My Website",
+    title: "Rahul Portfolio",
     description: "This is my Next.js site",
     url: "https://rahulreddy416.vercel.app",
-    siteName: "Rahul portfolio",
+    siteName: "Rahul Portfolio",
     images: [
       {
-        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfCBQAq4fDkjizcfZGBW_6ir3gL4Kd8b_3fA&s",
+        url: "",
         width: 1200,
         height: 630,
       },
@@ -37,9 +37,11 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rahul-portfolio",
+    title: "Rahul Portfolio",
     description: "This is my Next.js site",
-    images: ["https://mywebsite.com/og-image.jpg"],
+    images: [
+      "",
+    ],
   },
 };
 
@@ -64,6 +66,7 @@ export default function RootLayout({
             gtag('config', 'G-LVN3TJF4RM');
           `}
         </Script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navbar />
