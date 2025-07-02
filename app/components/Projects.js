@@ -6,9 +6,9 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const projects = [
-  { title: 'Bharathyundai', description: 'A cool web app that solves real problems with a clean UI.', link: 'bharathyundai.in' },
-  { title: 'saboo-nexa', description: 'An awesome website built with React and Tailwind.', link: 'saboonexa.in' },
-  { title: 'Saboo-Arena', description: 'A beautiful design concept for startups.', link: 'saboomaruti.in' },
+  { title: 'Bharathyundai', description: 'A cool web app that solves real problems with a clean UI.', link: 'https://bharathyundai.in' },
+  { title: 'saboo-nexa', description: 'An awesome website built with React and Tailwind.', link: 'https://saboonexa.in' },
+  { title: 'Saboo-Arena', description: 'A beautiful design concept for startups.', link: 'https://saboomaruti.in' },
 ];
 
 export default function Projects() {
