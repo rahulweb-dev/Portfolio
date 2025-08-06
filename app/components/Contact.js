@@ -6,6 +6,32 @@ import { FiCheckCircle } from 'react-icons/fi';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Spinner Component
+function Spinner({ size = 5, color = 'white' }) {
+  return (
+    <svg
+      className={`animate-spin h-${size} w-${size} text-${color}`}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v8z"
+      />
+    </svg>
+  );
+}
+
 export default function Contact() {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
@@ -19,6 +45,7 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,6 +69,8 @@ export default function Contact() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -60,11 +89,17 @@ export default function Contact() {
     } catch (error) {
       toast.error('Failed to send message.');
       console.error('Submission Error:', error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="py-24 px-6 max-w-7xl mx-auto bg-black text-white" data-aos="fade-up">
+    <section
+      id="contact"
+      className="py-24 px-6 max-w-7xl mx-auto bg-black text-white"
+      data-aos="fade-up"
+    >
       <h2 className="text-5xl font-extrabold mb-12 text-center text-indigo-600 drop-shadow-sm">
         Get in Touch
       </h2>
@@ -112,7 +147,7 @@ export default function Contact() {
                   )}
                   <label className="absolute left-4 top-3 text-sm text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-3 peer-focus:text-sm peer-focus:text-indigo-500">
                     {field === 'number'
-                      ? 'Phone Number'
+                      ? ''
                       : field.charAt(0).toUpperCase() + field.slice(1)}
                   </label>
                 </div>
@@ -121,9 +156,19 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="mt-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 px-6 rounded-2xl font-semibold shadow-md hover:from-purple-500 hover:to-indigo-500 transform hover:scale-105 transition duration-300"
+              disabled={loading}
+              className={`mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 px-6 rounded-2xl font-semibold shadow-md hover:from-purple-500 hover:to-indigo-500 transform hover:scale-105 transition duration-300 ${
+                loading ? 'opacity-60 cursor-not-allowed' : ''
+              }`}
             >
-              Send Message
+              {loading ? (
+                <>
+                  <Spinner size={5} color="white" />
+                  Sending...
+                </>
+              ) : (
+                'Send Message'
+              )}
             </button>
           </form>
         </div>

@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'; // ✅ Fix missing import
 
 export default function AdminLeadsPage() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
+  // ✅ Fetch all leads
   const fetchLeads = async () => {
     try {
       const res = await fetch('/api/contact');
@@ -18,13 +21,14 @@ export default function AdminLeadsPage() {
     }
   };
 
+  // ✅ Delete a lead
   const deleteLead = async (id) => {
     if (!confirm('Are you sure you want to delete this lead?')) return;
     try {
       const res = await fetch(`/api/contact?id=${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        setLeads(leads.filter((lead) => lead._id !== id));
+        setLeads((prev) => prev.filter((lead) => lead._id !== id));
       } else {
         alert('Failed to delete');
       }
@@ -33,12 +37,35 @@ export default function AdminLeadsPage() {
     }
   };
 
+  // ✅ Authentication check
   useEffect(() => {
-    fetchLeads();
+    const checkAuthAndLoad = async () => {
+      const res = await fetch('/api/check-auth');
+      if (!res.ok) {
+        router.push('/admin/login');
+      } else {
+        await fetchLeads();
+      }
+    };
+    checkAuthAndLoad();
   }, []);
 
+  // ✅ Safe date parsing fallback
+  const formatDate = (lead) => {
+    try {
+      if (lead.createdAt) {
+        return new Date(lead.createdAt).toLocaleDateString();
+      } else if (lead._id) {
+        const timestamp = parseInt(lead._id.toString().substring(0, 8), 16) * 1000;
+        return new Date(timestamp).toLocaleDateString();
+      }
+    } catch {
+      return 'N/A';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6 ">
+    <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-12">
         <h1 className="text-3xl font-bold mb-6 text-center">All Leads</h1>
 
@@ -68,10 +95,11 @@ export default function AdminLeadsPage() {
                     <td className="py-2 px-4 border">{lead.email}</td>
                     <td className="py-2 px-4 border">{lead.number}</td>
                     <td className="py-2 px-4 border">{lead.message}</td>
-                    <td className="py-2 px-4 border">
-                      {new Date(lead.createdAt || lead._id?.toString().substring(0, 8)).toLocaleDateString()}
-                    </td>
-                    <td className="py-2 px-4 border text-red-600 font-semibold cursor-pointer" onClick={() => deleteLead(lead._id)}>
+                    <td className="py-2 px-4 border">{formatDate(lead)}</td>
+                    <td
+                      className="py-2 px-4 border text-red-600 font-semibold cursor-pointer"
+                      onClick={() => deleteLead(lead._id)}
+                    >
                       Delete
                     </td>
                   </tr>
